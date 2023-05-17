@@ -1,5 +1,8 @@
 body {
-  font-family: verdana;
+  background-image: url("./images/bg3.jpeg");
+  background-size: cover;
+  padding: 24px;
+  color: #ffffff;
 }
 
 form {
@@ -9,9 +12,4 @@ form {
 
 form > * {
   margin: 1rem;
-}
-
-nav {
-  display: flex;
-  justify-content: space-around;
 }
