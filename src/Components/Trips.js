@@ -1,22 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// The Trips component fetches and displays the user's past trip reservations
+
 const Trips = () => {
+  // useState hook initializes and provides setter for trips state
+
   const [trips, setTrips] = useState([]);
 
+  // useEffect hook to fetch past trip reservations when the component mounts
+
   useEffect(() => {
+    // async function to fetch the data
     const fetchTrips = async () => {
+      // getting the token from local storage
       const token = window.localStorage.getItem("token");
+      // API call to the server to fetch the data
       const response = await axios.get("/api/reservations/past", {
         headers: {
           authorization: token,
         },
       });
+      // setting the fetched data to state
       setTrips(response.data);
     };
 
+    // calling the fetchTrips function
+
     fetchTrips();
-  }, []);
+  }, []); // The dependency array is empty, so this effect runs once on mount and not on updates
 
   return (
     <div>

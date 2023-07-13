@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -64,8 +62,21 @@ const Home = () => {
               <span id="heading">So, You want to travel to</span>
               <h1 className="homehead">Space</h1>
             </div>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                margin: "3%",
+              }}
+            >
+              <p
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  textAlign: "left",
+                  marginLeft: "5%",
+                }}
+              >
                 If you want to go to space, you might as well genuinely go to
                 outer space and not hover kind of on the edge of it. Well sit
                 back and relax because we'll give you a truly out of this world
@@ -115,7 +126,7 @@ const Home = () => {
               </BootstrapButton>
             </div>
             <div>
-              <span id="headingapod">Solar Picture of the Day</span>
+              <span id="headingapod">Picture of the Day</span>
               <h2 className="apodhead">{apodData.title}</h2>
               <img
                 style={{
@@ -159,7 +170,7 @@ const Home = () => {
               linkColor="#d0d6f9"
               sourceType="profile"
               screenName="spacex"
-              options={{ height: 250, width: 1000 }}
+              options={{ height: 200, width: 1000 }}
             />
           </div>
         </div>

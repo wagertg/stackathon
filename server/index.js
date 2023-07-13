@@ -2,6 +2,8 @@ const app = require("./app");
 const { syncAndSeed } = require("./db");
 require("dotenv").config();
 
+// Starts the application by connecting to the database, seeding it with data, and starting the server.
+
 const init = async () => {
   try {
     await syncAndSeed();

@@ -4,6 +4,8 @@ const { User } = require("../db");
 
 module.exports = app;
 
+// Creates a new order for the user identified by the token provided in the request headers. It sends the newly created order as a response.
+
 app.post("/", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
@@ -12,6 +14,8 @@ app.post("/", async (req, res, next) => {
     next(ex);
   }
 });
+
+// Retrieves the current shopping cart for the user identified by the token provided in the request headers. It sends the cart as a response.
 
 app.get("/cart", async (req, res, next) => {
   try {
@@ -22,6 +26,8 @@ app.get("/cart", async (req, res, next) => {
   }
 });
 
+// Adds an item (as provided in the request body) to the cart of the user identified by the token provided in the request headers. It sends the updated cart as a response.
+
 app.post("/cart", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
@@ -30,6 +36,8 @@ app.post("/cart", async (req, res, next) => {
     next(ex);
   }
 });
+
+// Removes an item (as provided in the request body) from the cart of the user identified by the token provided in the request headers. It sends the updated cart as a response.
 
 app.put("/cart", async (req, res, next) => {
   try {
@@ -40,7 +48,8 @@ app.put("/cart", async (req, res, next) => {
   }
 });
 
-// route to checkout
+// Performs a checkout operation for the user identified by the token provided in the request headers, creating a new reservation. It sends the created reservation as a response.
+
 app.post("/checkout", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
@@ -51,7 +60,8 @@ app.post("/checkout", async (req, res, next) => {
   }
 });
 
-// route to get past orders
+// Retrieves past orders for the user identified by the token provided in the request headers. It sends the past orders as a response.
+
 app.get("/past", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);

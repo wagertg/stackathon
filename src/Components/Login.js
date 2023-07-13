@@ -43,14 +43,21 @@ const BootstrapButton = styled(Button)({
   },
 });
 
+// The Login component provides an interface for users to enter their credentials and log in to the application
+
 const Login = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // State for keeping track of user credentials (username and password)
+
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+
+  // Functions to open and close Snackbar notification
 
   const handleClick = () => {
     setOpen(true);
@@ -60,22 +67,16 @@ const Login = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
 
-  const buttonStyle = {
-    fontFamily: "Bellefair, serif",
-    fontWeight: "bold",
-    fontSize: "16px",
-    padding: "10px 20px",
-    backgroundColor: "#4caf50",
-    color: "#fff",
-  };
+  // Function to update the credentials state based on user input
 
   const onChange = (ev) => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
+
+  // Function to log the user in, navigate to the home page, and display a notification
 
   const login = (ev) => {
     ev.preventDefault();

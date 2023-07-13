@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  removeFlightFromCart,
-  addFlightToCart,
-  checkout,
-  _guestCheckout,
-} from "../store/cart";
+import { removeFlightFromCart, addFlightToCart, checkout } from "../store/cart";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { styled } from "@mui/material/styles";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -47,6 +44,8 @@ const BootstrapButton = styled(Button)({
   },
 });
 
+// The cart component represents the UI of the cart, it includes the list of flights in the cart and their details
+// and functionality to navigate back to the flights, add or remove flights from the cart, checkout, and display a success message.
 const Cart = () => {
   const { cart, auth } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -61,117 +60,105 @@ const Cart = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
 
+  // This function calculates the total price of the items in the cart
   const totalPrice = cart.lineItems.reduce((total, item) => {
     const done = item.flight.price * item.quantity;
     return total + done;
   }, 0);
 
+  // The handleRemove function dispatches an action to remove a certain quantity of a flight from the cart
   const handleRemove = (flight, quantityToRemove) => {
     dispatch(removeFlightFromCart(flight, quantityToRemove));
   };
 
+  // The handleAddToCart function dispatches an action to add a certain quantity of a flight to the cart
   const handleAddToCart = (flight, quantityToAdd) => {
     dispatch(addFlightToCart(flight, quantityToAdd));
   };
 
+  // The handleCheckout function dispatches an action to checkout
   const handleCheckout = () => {
     dispatch(checkout());
   };
 
   return (
-    <div>
-      <h1 className="heading">CART</h1>
-      <div style={{ marginLeft: "11.5%" }}>
-        <BootstrapButton
-          variant="outlined"
-          onClick={() => {
-            navigate("/flights");
+    <div style={{ padding: "2rem", width: "75%" }}>
+      <Typography variant="h3" component="h1" gutterBottom>
+        CART
+      </Typography>
+
+      <BootstrapButton
+        variant="outlined"
+        onClick={() => navigate("/flights")}
+        style={{ marginBottom: "2rem" }}
+      >
+        NOPE, NOT DONE YET
+      </BootstrapButton>
+
+      {cart.lineItems.map((item, index) => (
+        <Paper
+          key={item.id || index}
+          style={{
+            padding: "1rem",
+            marginBottom: "1rem",
+            backgroundColor: "#fffff",
+            opacity: "1.8",
           }}
         >
-          NOPE, NOT DONE YET
-        </BootstrapButton>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          margin: "2%",
-        }}
-      >
-        {cart.lineItems.map((item, index) => (
-          <div className="lineitem" key={item.id || index}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                flexGrow: "inherit",
-                margin: "2%",
-                alignItems: "center",
-                gap: "2rem",
-              }}
-            >
-              <img
-                style={{
-                  display: !item.flight.image ? "none" : "",
-                }}
-                width="250"
-                height="250"
-                src={item.flight.image}
-              />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                lineHeight: "15px",
-              }}
-            >
-              <h1>{item.flight.destination}</h1>
-              <div style={{ lineHeight: "10px" }}>
-                <h4>
-                  Date: <span>{item.flight.date}</span>
-                </h4>
-                <h4>Travel Time: {item.flight.travel}</h4>
-                <h4>Distance: {item.flight.distance}</h4>
-              </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: "3rem",
+            }}
+          >
+            <img
+              src={item.flight.image}
+              width="250"
+              height="250"
+              alt="Flight"
+              style={{ marginRight: "0rem" }}
+            />
+            <div style={{ margin: "1%" }}>
+              <Typography variant="h5">{item.flight.destination}</Typography>
+              <Typography variant="body1">
+                Date: {item.flight.date}
+                <br />
+                Travel Time:{item.flight.travel}
+                <br />
+                Distance: {item.flight.distance}
+              </Typography>
               <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  lineHeight: "15px",
-                }}
+                style={{ display: "flex", alignItems: "center", gap: "0rem" }}
               >
-                <h4>Passengers: </h4>
+                <Typography variant="body1">
+                  Passengers: {item.quantity}
+                </Typography>
                 <IconButton
-                  color="secondary"
+                  color="success"
                   disabled={item.quantity < 1}
                   onClick={() => handleRemove(item.flight, 1)}
                 >
                   <RemoveIcon />
                 </IconButton>
-                {item.quantity}
                 <IconButton
-                  color="secondary"
+                  color="success"
                   onClick={() => handleAddToCart(item.flight)}
-                  variant="contained"
                 >
                   <AddIcon />
                 </IconButton>
               </div>
-              <h4>
+              <Typography variant="body1">
                 Price: ${(item.quantity * item.flight.price).toLocaleString()}
-              </h4>
+              </Typography>
               <Button
+                style={{ marginTop: "2%" }}
                 variant="outlined"
                 color="error"
-                size="medium"
                 startIcon={<DeleteIcon />}
                 onClick={() => handleRemove(item.flight, item.quantity)}
               >
@@ -179,48 +166,35 @@ const Cart = () => {
               </Button>
             </div>
           </div>
-        ))}
-      </div>
+        </Paper>
+      ))}
 
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "15px",
-          margin: "10px",
+          justifyContent: "space-between",
+          marginTop: "2rem",
         }}
       >
-        <h2>TOTAL PRICE: ${totalPrice.toLocaleString()}</h2>
-        <BootstrapButton
+        <Typography variant="h5">
+          TOTAL PRICE: ${totalPrice.toLocaleString()}
+        </Typography>
+        <Button
           variant="contained"
-          size="medium"
+          color="success"
           onClick={() => {
-            handleCheckout(), handleClick();
+            handleCheckout();
+            handleClick();
           }}
         >
           Checkout
-        </BootstrapButton>
-        <Snackbar
-          width={100}
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-        >
-          <Alert
-            onClose={handleClose}
-            severity="success"
-            sx={{ width: "100%", fontSize: "20px" }}
-          >
-            Checkout complete! Head to <em>My Trips</em> for more info.
-          </Alert>
-        </Snackbar>
+        </Button>
       </div>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Checkout complete! Head to <em>My Trips</em> for more info.
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

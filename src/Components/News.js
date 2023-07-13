@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+// The News functional component fetches and displays news articles.
+
 const News = () => {
+  // The useState hook initializes articles state variable to an empty array.
+
   const [articles, setArticles] = useState([]);
+
+  // The useEffect hook fetches news articles once the component mounts.
 
   useEffect(() => {
     const fetchNews = async () => {
+      // Sends a GET request to an external API to fetch news articles.
       const response = await axios.request(
         "https://spaceflight-news2.p.rapidapi.com/v3/articles",
         {
@@ -21,6 +28,7 @@ const News = () => {
           },
         }
       );
+      // Updates the state variable 'articles' with the fetched news articles.
       setArticles(response.data);
     };
     fetchNews();
@@ -29,7 +37,9 @@ const News = () => {
   return (
     <div>
       <h2 className="heading">STAY UP TO DATE</h2>
+
       {articles.map((article, index) => (
+        // The 'map' function renders a div for each article with its details.
         <div key={article.id} className="home-text">
           <div
             style={{
@@ -52,8 +62,8 @@ const News = () => {
                   borderRadius: "10px",
                   boxShadow: "0 0px 15px #d0d6f9",
                 }}
-                height={500}
-                width={450}
+                height={400}
+                width={350}
               />
             </div>
             <div

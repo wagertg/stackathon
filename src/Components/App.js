@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
 import Flights from "./Flights";
-
 import Cart from "./Cart";
 import Profile from "./Profile";
 import Trips from "./Trips";
@@ -12,22 +13,21 @@ import Tech from "./Tech";
 import Navbar from "./Navbar";
 import News from "./News";
 import "../App.css";
-
-import { useSelector, useDispatch } from "react-redux";
 import {
   loginWithToken,
   fetchFlights,
   fetchCart,
   addFlightToCart,
-  logout,
 } from "../store";
-import { Link, Routes, Route, useNavigate } from "react-router-dom";
 
 const App = () => {
   const { auth, cart } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const prevAuth = useRef({});
+
+  // 'useEffect' is a hook from React that performs side effects in function components.
+  // The first one is run after the component mounts, and it performs initial data loading.
 
   useEffect(() => {
     dispatch(loginWithToken()).catch((ex) => {
@@ -38,6 +38,9 @@ const App = () => {
       dispatch(addFlightToCart());
     }
   }, []);
+
+  // The second useEffect runs whenever the 'auth' state changes.
+  // It checks if the user has logged in or logged out and fetches the cart in either case.
 
   useEffect(() => {
     if (!prevAuth.current.id && auth.id) {
@@ -50,14 +53,13 @@ const App = () => {
     }
   }, [auth]);
 
+  // The third useEffect is run after every render and updates the previous authentication state.
+
   useEffect(() => {
     prevAuth.current = auth;
   });
 
-  const _logout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
+  // The component returns a JSX element that contains the application's routes and navigation bar.
 
   return (
     <div>

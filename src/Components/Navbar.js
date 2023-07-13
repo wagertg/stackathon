@@ -24,6 +24,7 @@ import planet from "../Images/exxx.png";
 import spacex from "../Images/xspace.png";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import ava from "../Images/avatar.png";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -195,7 +196,7 @@ const Navbar = () => {
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                 >
-                  <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                  <Avatar src={ava} sx={{ width: 32, height: 32 }}></Avatar>
                 </IconButton>
               </Tooltip>
             </Box>
@@ -296,7 +297,7 @@ const Navbar = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                   >
-                    <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                    <Avatar sx={{ width: 50 }}>M</Avatar>
                   </IconButton>
                 </Tooltip>
               </Box>

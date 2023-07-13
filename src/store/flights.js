@@ -1,5 +1,8 @@
 import axios from "axios";
 
+// This is a reducer function for the Redux store.
+// It takes the current state and an action, and returns the new state
+
 const flights = (state = [], action) => {
   if (action.type === "SET_FLIGHTS") {
     return action.flights;
@@ -9,6 +12,8 @@ const flights = (state = [], action) => {
   }
   return state;
 };
+// This is an action creator function for creating a new flight
+// It's an asynchronous function, meaning it will return a function that performs an async operation
 
 export const createFlight = (flight) => {
   return async (dispatch) => {
@@ -16,6 +21,8 @@ export const createFlight = (flight) => {
     dispatch({ type: "CREATE_FLIGHT", flight: response.data });
   };
 };
+
+// This is an action creator function for fetching all flights
 
 export const fetchFlights = () => {
   return async (dispatch) => {
@@ -27,6 +34,8 @@ export const fetchFlights = () => {
     }
   };
 };
+
+// This is an action creator function for searching flights
 
 export const searchFlights = (query) => {
   return async (dispatch) => {

@@ -84,17 +84,20 @@ function a11yProps(index) {
   };
 }
 
+// Flights component fetches and displays flights data for users to choose their destination
+
 const Flights = () => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
+
+  // useSelector hook is used to extract the flights data from the Redux store state
   const flights = useSelector((state) => state.flights);
-  const { user } = useSelector((state) => state.auth); // get the user from auth state
   const [destination, setDestination] = useState("");
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
-  const { id } = useParams();
+
+  // Functions to handle opening and closing a Snackbar
 
   const handleClick = () => {
     setOpen(true);
@@ -108,13 +111,19 @@ const Flights = () => {
     setOpen(false);
   };
 
+  // useEffect hook fetches the flights data when the component mounts
+
   useEffect(() => {
     dispatch(fetchFlights());
   }, [dispatch]);
 
+  // filteredFlights represents the flights that match the search query
+
   const filteredFlights = flights.filter((flight) =>
     flight.destination.toLowerCase().includes(search.toLowerCase())
   );
+
+  // save function creates a new flight and navigates to the flights page
 
   const save = async (ev) => {
     ev.preventDefault();
@@ -123,9 +132,13 @@ const Flights = () => {
     navigate("/flights");
   };
 
+  // handleAddToCart function dispatches an action to add a flight to the cart
+
   const handleAddToCart = (flight) => {
     dispatch(addFlightToCart(flight, 1));
   };
+
+  // handleChange function sets the value state based on the selected tab
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

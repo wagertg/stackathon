@@ -1,3 +1,6 @@
+// This defines a User model using Sequelize.
+// Import necessary libraries, functions and environment variables.
+
 const conn = require("./conn");
 const { STRING, UUID, UUIDV4, TEXT, BOOLEAN } = conn.Sequelize;
 const bcrypt = require("bcrypt");
@@ -8,7 +11,7 @@ const User = conn.define("user", {
   id: {
     type: UUID,
     primaryKey: true,
-    defaultValue: UUIDV4,
+    defaultValue: UUIDV4, // UUIDV4 generates a unique identifier
   },
   username: {
     type: STRING,
@@ -32,19 +35,10 @@ const User = conn.define("user", {
   },
   avatar: {
     type: TEXT,
-    get: function () {
-      const prefix = "data:image/png;base64,";
-      const data = this.getDataValue("avatar");
-      if (!data) {
-        return data;
-      }
-      if (data.startsWith(prefix)) {
-        return data;
-      }
-      return `${prefix}${data}`;
-    },
   },
 });
+
+// Defining instance methods for User model.
 
 User.prototype.createOrder = async function () {
   const cart = await this.getCart();
@@ -109,17 +103,14 @@ User.prototype.removeFromCart = async function ({ flight, quantityToRemove }) {
 };
 
 User.prototype.checkout = async function () {
-  // use the createOrder method to convert the current cart to an order
   const reservation = await this.createOrder();
 
-  // create a new cart for future purchases
   await this.getCart();
 
   return reservation;
 };
 
 User.prototype.getPastOrders = async function () {
-  // find all orders for this user where isCart is false
   const pastOrders = await conn.models.reservation.findAll({
     where: {
       userId: this.id,
@@ -135,6 +126,8 @@ User.prototype.getPastOrders = async function () {
 
   return pastOrders;
 };
+
+// Before saving a user, if password field has changed, hash the new password
 
 User.addHook("beforeSave", async (user) => {
   if (user.changed("password")) {

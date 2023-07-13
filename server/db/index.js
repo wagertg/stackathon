@@ -4,6 +4,8 @@ const Flight = require("./Flight");
 const Reservation = require("./Reservation");
 const LineItem = require("./LineItem");
 
+// This establishes the relationships between models, setting up database relationships, and seeding the database
+
 Reservation.belongsTo(User);
 LineItem.belongsTo(Reservation);
 Reservation.hasMany(LineItem);
@@ -12,7 +14,11 @@ LineItem.belongsTo(Flight);
 const syncAndSeed = async () => {
   await conn.sync({ force: true });
   const [moe, lucy, larry, ethyl] = await Promise.all([
-    User.create({ username: "moe", password: "123" }),
+    User.create({
+      username: "moe",
+      password: "123",
+      avatar: "https://api.dicebear.com/6.x/thumbs/svg?seed=moe",
+    }),
     User.create({ username: "lucy", password: "123" }),
     User.create({ username: "larry", password: "123" }),
     User.create({ username: "ethyl", password: "123" }),

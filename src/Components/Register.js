@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { register } from "../store";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import { InputLabel, Input } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -37,6 +35,8 @@ const BootstrapButton = styled(Button)({
   },
 });
 
+// The Register component provides an interface for users to create a new account
+
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,9 +45,13 @@ const Register = () => {
     password: "",
   });
 
+  // Function to update the credentials state based on user input
+
   const onChange = (ev) => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
+
+  // Function to register the user and navigate to the home page
 
   const _register = async (ev) => {
     ev.preventDefault();

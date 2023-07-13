@@ -42,7 +42,11 @@ const BootstrapButton = styled(Button)({
   },
 });
 
+// 'Profile' is a functional component for displaying and updating a user's profile.
+
 const Profile = () => {
+  // 'useState' hook initializes 'open' and 'username' states, which track
+  // the status of a Snackbar notification and the inputted username, respectively.
   const [open, setOpen] = useState(false);
   const { auth } = useSelector((state) => state);
   const [username, setUsername] = useState("");
@@ -60,11 +64,15 @@ const Profile = () => {
     setOpen(false);
   };
 
+  // 'useEffect' hook updates 'username' state whenever 'auth' state changes.
+
   useEffect(() => {
     if (auth.id) {
       setUsername(auth.username);
     }
   }, [auth]);
+
+  // '_update' function dispatches action to update 'auth' state with new 'username'.
 
   const _update = async (ev) => {
     ev.preventDefault();

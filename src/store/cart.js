@@ -4,18 +4,29 @@ export const SET_CART = "SET_CART";
 export const CHECKOUT = "CHECKOUT";
 export const SET_CART_ITEM_COUNT = "SET_CART_ITEM_COUNT";
 
+// This is the reducer for the cart. It takes the current state and an action and
+// produces the next state based on the action type.
 const cart = (state = { lineItems: [], itemCount: 0 }, action) => {
-  switch (action.type) {
-    case SET_CART:
-      return action.cart;
-    case CHECKOUT:
-      return { lineItems: [], itemCount: 0 }; // clear the cart after checkout
-    case SET_CART_ITEM_COUNT:
-      return { ...state, itemCount: action.itemCount };
-    default:
-      return state;
+  // If the action is to set the cart, it takes the cart from the action and uses it as the new state.
+  if (action.type === SET_CART) {
+    return action.cart;
+  }
+  // If the action is to checkout, it clears the cart and resets the item count.
+  else if (action.type === CHECKOUT) {
+    return { lineItems: [], itemCount: 0 };
+  }
+  // If the action is to set the item count, it takes the current state and modifies
+  // the itemCount property with the value provided in the action.
+  else if (action.type === SET_CART_ITEM_COUNT) {
+    return { ...state, itemCount: action.itemCount };
+  }
+  // If the action type doesn't match any known actions, the state is returned unchanged.
+  else {
+    return state;
   }
 };
+
+// The _checkout function dispatches a CHECKOUT action with the passed reservation object.
 
 const _checkout = (reservation) => {
   return {
@@ -24,11 +35,15 @@ const _checkout = (reservation) => {
   };
 };
 
+// The _guestCheckout function dispatches a CHECKOUT action without any reservation object.
+
 export const _guestCheckout = () => {
   return {
     type: CHECKOUT,
   };
 };
+
+// This function retrieves the cart from local storage. If it doesn't exist, it initializes a new one.
 
 const localCart = () => {
   let cart = JSON.parse(window.localStorage.getItem("cart"));
@@ -39,6 +54,8 @@ const localCart = () => {
   return cart;
 };
 
+// This function synchronizes the local cart with the server by posting each line item to the server.
+// After synchronization, the local cart is removed from local storage.
 const localCartToServer = async () => {
   const cart = localCart();
   const lineItems = cart.lineItems;
@@ -61,6 +78,8 @@ const localCartToServer = async () => {
   window.localStorage.removeItem("cart");
 };
 
+// This action creator fetches the cart from the server if the user is logged in, and from local storage otherwise.
+
 export const fetchCart = () => {
   return async (dispatch, getState) => {
     if (getState().auth.id) {
@@ -77,6 +96,9 @@ export const fetchCart = () => {
     }
   };
 };
+
+// This action creator removes a specified quantity of a flight from the cart, either on the server (if the user is logged in),
+// or in local storage (if the user is not logged in).
 
 export const removeFlightFromCart = (flight, quantityToRemove) => {
   return async (dispatch, getState) => {
@@ -108,6 +130,9 @@ export const removeFlightFromCart = (flight, quantityToRemove) => {
     }
   };
 };
+
+// This action creator adds a flight to the cart, either on the server (if the user is logged in),
+// or in local storage (if the user is not logged in).
 
 export const addFlightToCart = (flight) => {
   return async (dispatch, getState) => {
@@ -141,6 +166,7 @@ export const addFlightToCart = (flight) => {
     }
   };
 };
+// This action creator checks out the cart on the server, which presumably involves making a reservation and clearing the cart.
 
 export const checkout = () => {
   return async (dispatch) => {
