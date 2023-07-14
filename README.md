@@ -8,8 +8,7 @@
 
 ## 👨‍💻 About The Project
 
-Developed an engaging platform that caters to space enthusiasts, allowing them to plan and book interplanetary journeys.
-
+Created an immersive platform catering to the needs of space aficionados. This platform lets users plan and book interplanetary journeys, taking the E-commerce experience to another galaxy!
 
 ## 🛠️ Built With
 
